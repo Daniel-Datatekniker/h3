@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AirportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="name" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="iata" />
+          </Key>
+          <Property Name="iata" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="country" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Destination">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="airport" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="gate" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Plane">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="airline" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="destination" Type="int" Nullable="false" />
+          <Property Name="timeline" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Timeline">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="depature" Type="time" Precision="7" Nullable="false" />
+          <Property Name="arrival" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Destinati__airpo__25869641">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="1" />
+          <End Role="Destination" Type="Self.Destination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="iata" />
+            </Principal>
+            <Dependent Role="Destination">
+              <PropertyRef Name="airport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Plane__airline__2C3393D0">
+          <End Role="Airline" Type="Self.Airline" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airline">
+              <PropertyRef Name="name" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="airline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Plane__destinati__2D27B809">
+          <End Role="Destination" Type="Self.Destination" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destination">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Plane__timeline__2E1BDC42">
+          <End Role="Timeline" Type="Self.Timeline" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timeline">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="timeline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AirportModelStoreContainer">
+          <EntitySet Name="Airline" EntityType="Self.Airline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Destination" EntityType="Self.Destination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plane" EntityType="Self.Plane" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Timeline" EntityType="Self.Timeline" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Destinati__airpo__25869641" Association="Self.FK__Destinati__airpo__25869641">
+            <End Role="Airport" EntitySet="Airport" />
+            <End Role="Destination" EntitySet="Destination" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Plane__airline__2C3393D0" Association="Self.FK__Plane__airline__2C3393D0">
+            <End Role="Airline" EntitySet="Airline" />
+            <End Role="Plane" EntitySet="Plane" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Plane__destinati__2D27B809" Association="Self.FK__Plane__destinati__2D27B809">
+            <End Role="Destination" EntitySet="Destination" />
+            <End Role="Plane" EntitySet="Plane" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Plane__timeline__2E1BDC42" Association="Self.FK__Plane__timeline__2E1BDC42">
+            <End Role="Timeline" EntitySet="Timeline" />
+            <End Role="Plane" EntitySet="Plane" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AirportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="name" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Planes" Relationship="Self.FK__Plane__airline__2C3393D0" FromRole="Airline" ToRole="Plane" />
+        </EntityType>
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="iata" />
+          </Key>
+          <Property Name="iata" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Destinations" Relationship="Self.FK__Destinati__airpo__25869641" FromRole="Airport" ToRole="Destination" />
+        </EntityType>
+        <EntityType Name="Destination">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="airport" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Airport1" Relationship="Self.FK__Destinati__airpo__25869641" FromRole="Destination" ToRole="Airport" />
+          <NavigationProperty Name="Planes" Relationship="Self.FK__Plane__destinati__2D27B809" FromRole="Destination" ToRole="Plane" />
+        </EntityType>
+        <EntityType Name="Plane">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="airline" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="destination" Type="Int32" Nullable="false" />
+          <Property Name="timeline" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Airline1" Relationship="Self.FK__Plane__airline__2C3393D0" FromRole="Plane" ToRole="Airline" />
+          <NavigationProperty Name="Destination1" Relationship="Self.FK__Plane__destinati__2D27B809" FromRole="Plane" ToRole="Destination" />
+          <NavigationProperty Name="Timeline1" Relationship="Self.FK__Plane__timeline__2E1BDC42" FromRole="Plane" ToRole="Timeline" />
+        </EntityType>
+        <EntityType Name="Timeline">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="depature" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="arrival" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Planes" Relationship="Self.FK__Plane__timeline__2E1BDC42" FromRole="Timeline" ToRole="Plane" />
+        </EntityType>
+        <Association Name="FK__Plane__airline__2C3393D0">
+          <End Role="Airline" Type="Self.Airline" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airline">
+              <PropertyRef Name="name" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="airline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Destinati__airpo__25869641">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="1" />
+          <End Role="Destination" Type="Self.Destination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="iata" />
+            </Principal>
+            <Dependent Role="Destination">
+              <PropertyRef Name="airport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Plane__destinati__2D27B809">
+          <End Role="Destination" Type="Self.Destination" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destination">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Plane__timeline__2E1BDC42">
+          <End Role="Timeline" Type="Self.Timeline" Multiplicity="1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timeline">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="timeline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AirportData" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airlines" EntityType="Self.Airline" />
+          <EntitySet Name="Airports" EntityType="Self.Airport" />
+          <EntitySet Name="Destinations" EntityType="Self.Destination" />
+          <EntitySet Name="Planes" EntityType="Self.Plane" />
+          <EntitySet Name="Timelines" EntityType="Self.Timeline" />
+          <AssociationSet Name="FK__Plane__airline__2C3393D0" Association="Self.FK__Plane__airline__2C3393D0">
+            <End Role="Airline" EntitySet="Airlines" />
+            <End Role="Plane" EntitySet="Planes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Destinati__airpo__25869641" Association="Self.FK__Destinati__airpo__25869641">
+            <End Role="Airport" EntitySet="Airports" />
+            <End Role="Destination" EntitySet="Destinations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Plane__destinati__2D27B809" Association="Self.FK__Plane__destinati__2D27B809">
+            <End Role="Destination" EntitySet="Destinations" />
+            <End Role="Plane" EntitySet="Planes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Plane__timeline__2E1BDC42" Association="Self.FK__Plane__timeline__2E1BDC42">
+            <End Role="Timeline" EntitySet="Timelines" />
+            <End Role="Plane" EntitySet="Planes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AirportModelStoreContainer" CdmEntityContainer="AirportData">
+          <EntitySetMapping Name="Airlines">
+            <EntityTypeMapping TypeName="AirportModel.Airline">
+              <MappingFragment StoreEntitySet="Airline">
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Airports">
+            <EntityTypeMapping TypeName="AirportModel.Airport">
+              <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="iata" ColumnName="iata" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Destinations">
+            <EntityTypeMapping TypeName="AirportModel.Destination">
+              <MappingFragment StoreEntitySet="Destination">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="airport" ColumnName="airport" />
+                <ScalarProperty Name="gate" ColumnName="gate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planes">
+            <EntityTypeMapping TypeName="AirportModel.Plane">
+              <MappingFragment StoreEntitySet="Plane">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="airline" ColumnName="airline" />
+                <ScalarProperty Name="destination" ColumnName="destination" />
+                <ScalarProperty Name="timeline" ColumnName="timeline" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timelines">
+            <EntityTypeMapping TypeName="AirportModel.Timeline">
+              <MappingFragment StoreEntitySet="Timeline">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="depature" ColumnName="depature" />
+                <ScalarProperty Name="arrival" ColumnName="arrival" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
